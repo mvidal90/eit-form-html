@@ -1,4 +1,42 @@
 
+const disableSubmitButton = () => {
+    const tycElem = document.getElementById("tyc")
+    const btnElem = document.getElementById("submit-button")
+    if (!tycElem.checked) {
+        btnElem.disabled = true
+    } else {
+        btnElem.disabled = false
+    }
+}
+
+document.getElementById("tyc").addEventListener("change", disableSubmitButton)
+
+const validateStgLength = (string) => string.length >= 2;
+
+const validateEmail = (email) => {
+    const regexp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+    return regexp.test(email);
+}
+
+const validateInt = (number) => number && parseInt(number) >= 0;
+
+const validatePassword = (pass) => {
+    const regexp = new RegExp(/^(?=(?:.*\d))(?=.*[A-Z])(?=.*[a-z])\S{8,64}/)
+    return regexp.test(pass);
+}
+
+const cleanError = (id) => {
+    document.getElementById(id).className =  null
+    document.getElementById(`${id}-error`).className = "helper"
+    document.getElementById(`${id}-error`).innerText = ""
+}
+
+const setError = (id, helpertext) => {
+    document.getElementById(id).className =  "input-error"
+    document.getElementById(`${id}-error`).className = "helper-error"
+    document.getElementById(`${id}-error`).innerText = helpertext
+}
+
 const handleSubmit = (event) => {
     event.preventDefault()
     const values = {};
@@ -14,45 +52,49 @@ const handleSubmit = (event) => {
 
     if (validateStgLength(names)) {
         values.names = names;
-        document.getElementById("names").style.border =  null
+        cleanError("names")
     } else {
         isValid = false
-        document.getElementById("names").style.border = "1px solid red"
+        setError("names", "El nombre debe tener al menos 2 caracteres.")
     }
     if (validateStgLength(lastnames)) {
         values.lastnames = lastnames;
-        document.getElementById("lastnames").style.border = null
+        cleanError("lastnames")
     } else {
         isValid = false
-        document.getElementById("lastnames").style.border = "1px solid red"
+        setError("lastnames", "El apellido debe tener al menos 2 caracteres.")
     }
     if (birthdate) {
         values.birthdate = birthdate;
-        document.getElementById("birthdate").style.border =  null
+        cleanError("birthdate")
     } else {
         isValid = false
-        document.getElementById("birthdate").style.border = "1px solid red"
+        setError("birthdate", "La fecha de nacimiento es obligatoria.")
     }
     if (validateEmail(email)) {
         values.email = email;
-        document.getElementById("email").style.border =  null
+        cleanError("email")
     } else {
         isValid = false
-        document.getElementById("email").style.border = "1px solid red"
+        setError("email", "El email no tiene el formato correcto.")
     }
-
-    values.child = child;
-    values.pass = pass;
-    values.tyc = tyc;
+    if (validateInt(child)) {
+        values.child = child;
+        cleanError("child")
+    } else {
+        isValid = false
+        setError("child", "El campoo es obligatorio.")
+    }
+    if (validatePassword(pass)) {
+        values.pass = pass;
+        cleanError("pass")
+    } else {
+        isValid = false
+        setError("pass", "La contraseña debe contener al menos 8 caracteres, con al menos una mayúscula, una minúscula y un número.")
+    }
     
-    if (isValid) {
+    if (isValid && tyc) {
+        values.tyc = tyc;
         console.log(values)
     }
-}
-
-const validateStgLength = (string) => string.length >= 2;
-
-const validateEmail = (email) => {
-    const regexp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
-    return regexp.test(email);
 }

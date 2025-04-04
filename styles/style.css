@@ -10,6 +10,11 @@ body {
     margin: 0;
 }
 
+label {
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
 input {
     padding: 0.5rem 1rem;
     border-radius: 1rem;
@@ -24,9 +29,12 @@ input:-webkit-autofill {
 .form-container {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
     padding: 2rem;
     width: 30%;
+}
+
+.checkbox-container {
+    margin: 1rem 0;
 }
 
 .submit-button,
@@ -36,4 +44,22 @@ input:-webkit-autofill {
     color: #FFF;
     background-color: rgb(8, 8, 78);
     border: 1px solid rgb(8, 8, 78);
+    margin: 0.5rem 0;
+}
+
+.submit-button:disabled {
+    background-color: rgb(78, 78, 137);
+}
+
+.input-error {
+    border: 2px solid #8e0a0a;
+}
+
+.helper {
+    display: none;
+}
+
+.helper-error {
+    font-size: 0.75rem;
+    color: #8e0a0a;
 }
